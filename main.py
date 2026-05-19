@@ -34,5 +34,7 @@ def setup_game():
         "normal":55,
         "hard":70
     }
+    
+
 
 setup_game()
