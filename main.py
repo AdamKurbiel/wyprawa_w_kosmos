@@ -1,6 +1,7 @@
 #Stworzone przez Adam Kurbiel
 from utils import ask_int, ask_choice
 from world import World
+from entities import Spaceship
 
 def setup_game():
     print("┌─ WYPRAWA W KOSMOS ─┐")
@@ -37,8 +38,20 @@ def setup_game():
     }
 
     world = World(world_size[difficulty],difficulty)
+    spaceship = Spaceship(expedition_name,spaceship_name,start_x,start_y,angle,energy)
+
+    return world, spaceship, max_steps[difficulty]
     
-    
+def game_loop(world, vehicle, max_steps):
+    pass
 
 
-setup_game()
+
+while True:
+    world, vehicle, max_steps = setup_game()
+    result = game_loop(world, vehicle, max_steps)
+
+    again = input("\nUruchomić nową symulację? (t/n): ").lower()
+    if again != "t":
+        print("Do zobaczenia!")
+        break
