@@ -23,5 +23,16 @@ def setup_game():
 
     difficulty = ask_choice("Poziom trudności",['easy','normal','hard'])
 
+    world_size = {
+        "easy": 90,
+        "normal":110,
+        "hard":140
+    }
+
+    max_steps = {
+        "easy":40,
+        "normal":55,
+        "hard":70
+    }
 
 setup_game()
