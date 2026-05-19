@@ -1,5 +1,6 @@
 #Stworzone przez Adam Kurbiel
 from utils import ask_int, ask_choice
+from world import World
 
 def setup_game():
     print("┌─ WYPRAWA W KOSMOS ─┐")
@@ -34,6 +35,9 @@ def setup_game():
         "normal":55,
         "hard":70
     }
+
+    world = World(world_size[difficulty],difficulty)
+    
     
 
 
