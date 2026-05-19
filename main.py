@@ -52,6 +52,16 @@ def show_intro(world,vehicle, max_steps):
     print(f"├Limit kroków: {max_steps}")
     print(f"└Cel misji: odnaleźć rdzeń energetyczny i przetrwać.")
 
+def choose_action():
+    print("\nDostępne akcje:")
+    print("1. Ruch naprzód")
+    print("2. Obrót w lewo")
+    print("3. Obrót w prawo")
+    print("4. Skanowanie terenu")
+    print("5. Tryb turbo")
+
+    return input("> Wybór: ")
+
 def game_loop(world, vehicle, max_steps):
     history = []
     visited = []
@@ -63,37 +73,89 @@ def game_loop(world, vehicle, max_steps):
         #Sprawdzanie czy gra się nie ma skończyć
         if vehicle.energy <= 0:
             reason = "Brak energii"
-            status = "PORAŻKA"
+            status = "PRZEGRANA"
             break
         
         if vehicle.integrity <= 0:
             reason = "Uszkodzenie pojazdu"
-            status = "PORAŻKA"
+            status = "PRZEGRANA"
             break
 
         if vehicle.steps >= max_steps:
             reason = "Przekroczono limit kroków"
-            status = "(prawie) SUKCES"
+            status = "PRZEGRANA"
             break
         
-        if vehicle.found_core and world.distance_to_base(vehicle.x, vehicle.y) <= 10:
+        if vehicle.found_core:
             reason = "Udany powrót z rdzeniem"
             status = "SUKCES"
             break
 
 
-        print(f"KROK {vehicle.steps + 1}")
-        print(f"Pozycja: ({vehicle.x},{vehicle.y})")
-        print(f"Energia: {vehicle.energy}")
-        print(f"Integralność: {vehicle.integrity}")
-        print(f"Rdzeń znaleziony: {'TAK' if vehicle.found_core else 'NIE'}")
+        print(f"┌───\nKROK {vehicle.steps + 1}")
+        print(f"├Pozycja: ({vehicle.x},{vehicle.y})")
+        print(f"├Energia: {vehicle.energy}")
+        print(f"├Integralność: {vehicle.integrity}")
+        print(f"└Rdzeń znaleziony: {'TAK' if vehicle.found_core else 'NIE'}")
 
+        action = choose_action()
+
+        before_energy = vehicle.energy
+        before_position = (vehicle.x, vehicle.y)
+
+        #AKCJE
+        match (action):
+            case "1":
+                log = vehicle.move(world)
+            case "2":
+                vehicle.turn(-45)
+                log = "Statek obrócił się w lewo o 45 stopni."
+            case "3":
+                vehicle.turn(45)
+                log = "Statek obrócił się w prawo o 45 stopni."
+            case "4":
+                log = world.scan_area(vehicle.x,vehicle.y)
+                vehicle.energy -= 2
+            case "5":
+                log = vehicle.move(world,turbo=True)
+            case _:
+                log = "Niepoprawna akcja. System wykonał automatyczny ruch."
+                log += " " + vehicle.move(world)
+            
+        world_result = world.apply_world_effect(vehicle)
+
+        if world_result:
+            visited.append(world_result)
+
+        print("\nRAPORT KROKU")
+        print(log)
+
+        if world_result:
+            print(world_result)
         
+        print(f"Pozycja przed ruchem: {before_position}")
+        print(f"Pozycja po ruchu: ({vehicle.x},{vehicle.y})")
+        print(f"Energia przed ruchem: {before_energy}")
+        print(f"Energia po ruchu: {vehicle.energy}")
+        print("=========================\n")
+
+        history.append((vehicle.x, vehicle.y))
+        
+        vehicle.steps += 1
+    
+    return {
+        "status": status,
+        "reason": reason,
+        "history": history,
+        "visited": visited
+    }
+
 
 
 while True:
     world, vehicle, max_steps = setup_game()
     result = game_loop(world, vehicle, max_steps)
+
 
     again = input("\nUruchomić nową symulację? (t/n): ").lower()
     if again != "t":
