@@ -2,7 +2,7 @@
 from utils import ask_int, ask_choice
 from world import World
 from entities import Spaceship
-from turtle_view import draw_world
+from turtle_view import init_world, draw_step
 
 def setup_game():
     print("┌─ WYPRAWA W KOSMOS ─┐")
@@ -68,9 +68,9 @@ def game_loop(world, vehicle, max_steps):
     visited = []
 
     show_intro(world, vehicle,max_steps)
+    init_world(world, vehicle)
 
     while True:
-
         #Sprawdzanie czy gra się nie ma skończyć
         if vehicle.energy <= 0:
             reason = "Brak energii"
@@ -141,6 +141,7 @@ def game_loop(world, vehicle, max_steps):
         print("=========================\n")
 
         history.append((vehicle.x, vehicle.y))
+        draw_step(history)
         
         vehicle.steps += 1
     
@@ -151,7 +152,7 @@ def game_loop(world, vehicle, max_steps):
         "visited": visited
     }
 
-def show_summary(world, vehicle, max_steps):
+def show_summary(vehicle, result):
     print(f"\n\n┌─{result['status'].upper()}")
     print(f"├Powód: {result['reason']}")
     print(f"├Nazwa wyprawy: {vehicle.expedition_name}")
@@ -174,7 +175,7 @@ def show_summary(world, vehicle, max_steps):
             print(f"- {event}")
         
     print()
-    draw_world(world, result['history'])
+    
 
     
 
@@ -182,7 +183,7 @@ while True:
     world, vehicle, max_steps = setup_game()
     result = game_loop(world, vehicle, max_steps)
 
-    show_summary(world,vehicle,result)
+    show_summary(vehicle,result)
 
     again = input("\nUruchomić nową symulację? (t/n): ").lower()
     if again != "t":
