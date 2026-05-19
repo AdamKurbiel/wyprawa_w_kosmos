@@ -1,4 +1,5 @@
 import random
+import math
 
 class World:
     def __init__(self, size, difficulty):
@@ -21,3 +22,6 @@ class World:
             points.append((x,y))
         
         return points
+    
+    def distance_to_base(self, x, y):
+        return int(math.dist((x,y), self.base_position))

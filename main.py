@@ -53,11 +53,42 @@ def show_intro(world,vehicle, max_steps):
     print(f"└Cel misji: odnaleźć rdzeń energetyczny i przetrwać.")
 
 def game_loop(world, vehicle, max_steps):
-    log = []
+    history = []
     visited = []
 
     show_intro(world, vehicle,max_steps)
 
+    while True:
+
+        #Sprawdzanie czy gra się nie ma skończyć
+        if vehicle.energy <= 0:
+            reason = "Brak energii"
+            status = "PORAŻKA"
+            break
+        
+        if vehicle.integrity <= 0:
+            reason = "Uszkodzenie pojazdu"
+            status = "PORAŻKA"
+            break
+
+        if vehicle.steps >= max_steps:
+            reason = "Przekroczono limit kroków"
+            status = "(prawie) SUKCES"
+            break
+        
+        if vehicle.found_core and world.distance_to_base(vehicle.x, vehicle.y) <= 10:
+            reason = "Udany powrót z rdzeniem"
+            status = "SUKCES"
+            break
+
+
+        print(f"KROK {vehicle.steps + 1}")
+        print(f"Pozycja: ({vehicle.x},{vehicle.y})")
+        print(f"Energia: {vehicle.energy}")
+        print(f"Integralność: {vehicle.integrity}")
+        print(f"Rdzeń znaleziony: {'TAK' if vehicle.found_core else 'NIE'}")
+
+        
 
 
 while True:
