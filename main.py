@@ -41,10 +41,10 @@ def setup_game():
     spaceship = Spaceship(expedition_name,spaceship_name,start_x,start_y,angle,energy)
 
     return world, spaceship, max_steps[difficulty]
-    
+
 def show_intro(world,vehicle, max_steps):
     print(f"\n┌──Wyprawa: {vehicle.expedition_name}")
-    print(f"├Pojazd: {vehicle.expedition_name}")
+    print(f"├Pojazd: {vehicle.name}")
     print(f"├Pozycja startowa: ({vehicle.x},{vehicle.y})")
     print(f"├Kąt startowy: {vehicle.angle}")
     print(f"├Energia startowa: {vehicle.energy}")
@@ -119,7 +119,7 @@ def game_loop(world, vehicle, max_steps):
             case "5":
                 log = vehicle.move(world,turbo=True)
             case _:
-                log = "Niepoprawna akcja. System wykonał automatyczny ruch."
+                log = "Niepoprawna akcja. Wykonuję automatyczny ruch."
                 log += " " + vehicle.move(world)
             
         world_result = world.apply_world_effect(vehicle)
@@ -150,12 +150,36 @@ def game_loop(world, vehicle, max_steps):
         "visited": visited
     }
 
+def show_summary(world, vehicle, max_steps):
+    print(f"\n\n┌─{result['status'].upper()}")
+    print(f"├Powód: {result['reason']}")
+    print(f"├Nazwa wyprawy: {vehicle.expedition_name}")
+    print(f"├Statek: {vehicle.name}")
+    print(f"├Pozycja końcowa: ({vehicle.x},{vehicle.y})")
+    print(f"├Liczba kroków: {vehicle.steps}")
+    print(f"├Pozostała energia: {vehicle.energy}")
+    print(f"├Integralność: {vehicle.integrity}")
 
+    score = vehicle.calculate_score(result["status"])
+
+    print(f"└WYNIK KOŃCOWY: {score} PUNKTÓW")
+
+    if result['visited']:
+        print("Najważniejsze zdarzenia:")
+
+        unique_events = list(set(result["visited"]))
+
+        for event in unique_events:
+            print(f"- {event}")
+        
+    print()
+    
 
 while True:
     world, vehicle, max_steps = setup_game()
     result = game_loop(world, vehicle, max_steps)
 
+    show_summary(world,vehicle,result)
 
     again = input("\nUruchomić nową symulację? (t/n): ").lower()
     if again != "t":

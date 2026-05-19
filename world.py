@@ -38,20 +38,20 @@ class World:
         if position == self.core_position and not vehicle.found_core:
             vehicle.found_core = True
             vehicle.energy += 30
-            return "Odnaleziono rdzeń energetyczny."
+            return "Odnaleziono rdzeń!"
         
         if position in self.energy_zones:
             vehicle.energy += 20
-            return "Aktywna strefa energii zwiększyła poziom zasilania."
+            return "Statek wszedł w strefę energii! +20 energii."
         
         if position in self.danger_zones:
             vehicle.integrity -= 20
-            return "Statek wleciał w niebezpieczną anomalię."
+            return "Statek wleciał w niebezpieczną anomalię. -20 Integralności."
         
         if position in self.repair_stations:
             vehicle.integrity += 15
             vehicle.integrity = min(vehicle.integrity, 100)
-            return "Automatyczna stacja naprawcza przywróciła integralność."
+            return "Statek wleciał do stacji naprawczej. Odzyskano integralność."
         
         return None
     
@@ -59,9 +59,9 @@ class World:
         distance = self.distance_to_core(x,y)
 
         if distance < 15:
-            return "Skaner wykrywa silne źródło energii bardzo blisko."
+            return "Skaner wykrywa rdzeń bardzo blisko."
         
         if distance < 35:
-            return "Skaner wykrywa niestabilne impulsy energetyczne."
+            return "Skaner wykrywa rdzeń z daleka."
         
         return "Brak istotnych sygnałów w pobliżu."

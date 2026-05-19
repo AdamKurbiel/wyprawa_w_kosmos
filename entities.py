@@ -33,7 +33,7 @@ class Spaceship:
 
         if not world.inside_world(new_x, new_y):
             self.energy -= 8
-            return "Pojazd odbił się od granicy świata i stracił energię."
+            return "Statek odbił się od granicy świata i stracił energię."
         
         self.x = new_x
         self.y = new_y
@@ -44,7 +44,20 @@ class Spaceship:
             self.integrity -= 5
             return "Aktywowano tryb turbo."
         
-        return "Pojazd przemieścił się do nowego sektora."
+        return "Statek przemieścił się do przodu."
     
     def turn(self,amount):
         self.angle = (self.angle + amount) % 360
+    
+    def calculate_score(self, status):
+        score = self.energy + self.integrity
+
+        if self.found_core:
+            score += 100
+
+        if status == "SUKCES":
+            score += 200
+        
+        score -= self.steps * 2
+
+        return max(score, 0)
