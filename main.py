@@ -1,5 +1,5 @@
 #Stworzone przez Adam Kurbiel
-from utils import ask_int
+from utils import ask_int, ask_choice
 
 def setup_game():
     print("┌─ WYPRAWA W KOSMOS ─┐")
@@ -16,5 +16,12 @@ def setup_game():
     
     start_x = ask_int("> Pozycja startowa X (-80 do 80):",-80,80,0)
     start_y = ask_int("> Pozycja startowa Y (-80 do 80):",-80,80,0)
+
+    angle = ask_int("> Kąt startowy (0-359):",0,359,90)
+
+    energy = ask_int("> Początkowa energia (50-250):",50,250,120)
+
+    difficulty = ask_choice("Poziom trudności",['easy','normal','hard'])
+
 
 setup_game()

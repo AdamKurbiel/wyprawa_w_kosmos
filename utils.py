@@ -16,3 +16,15 @@ def ask_int(message, minimum, maximum, default):
 
         except ValueError:
             print("Niepoprawna wartość.")
+
+#walidacja wyborów
+def ask_choice(message, choices):
+    print(f"{message}: {', '.join(choices)}")
+
+    while True:
+        value = input("Wybór: ").strip().lower()
+
+        if value in choices:
+            return value
+
+        print("Niepoprawny wybór.")
