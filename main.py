@@ -2,6 +2,7 @@
 from utils import ask_int, ask_choice
 from world import World
 from entities import Spaceship
+from turtle_view import draw_world
 
 def setup_game():
     print("┌─ WYPRAWA W KOSMOS ─┐")
@@ -173,6 +174,8 @@ def show_summary(world, vehicle, max_steps):
             print(f"- {event}")
         
     print()
+    draw_world(world, result['history'])
+
     
 
 while True:
