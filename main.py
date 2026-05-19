@@ -42,8 +42,21 @@ def setup_game():
 
     return world, spaceship, max_steps[difficulty]
     
+def show_intro(world,vehicle, max_steps):
+    print(f"\n┌──Wyprawa: {vehicle.expedition_name}")
+    print(f"├Pojazd: {vehicle.expedition_name}")
+    print(f"├Pozycja startowa: ({vehicle.x},{vehicle.y})")
+    print(f"├Kąt startowy: {vehicle.angle}")
+    print(f"├Energia startowa: {vehicle.energy}")
+    print(f"├Granice świata: {-world.size} do {world.size}")
+    print(f"├Limit kroków: {max_steps}")
+    print(f"└Cel misji: odnaleźć rdzeń energetyczny i przetrwać.")
+
 def game_loop(world, vehicle, max_steps):
-    pass
+    log = []
+    visited = []
+
+    show_intro(world, vehicle,max_steps)
 
 
 
