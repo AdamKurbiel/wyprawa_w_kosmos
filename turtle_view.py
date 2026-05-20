@@ -21,6 +21,7 @@ def create_turtle():
     t = turtle.Turtle()
     t.speed(0)
     t.pensize(2)
+    t.hideturtle()
     return t
 
 
@@ -51,7 +52,25 @@ def draw_legend(t):
 
     legend = [
         ("START","green"),
+        ("ENERGIA","yellow"),
+        ("ANOMALIA","red"),
+        ("STACJA NAPRAWCZA", "blue"),
+        ("RDZEŃ", "purple"),
+        ("STATEK", "white")
     ]
+
+    t.penup()
+    y = 300
+    for text, color in legend:
+        t.goto(-320,y)
+        t.dot(10,color)
+        t.write(text, font=("Arial", 10, "normal"))
+        y -= 25
+    
+    t.penup()
+    
+
+
 
 def init_world(world,vehicle):
     reset_view()
@@ -84,6 +103,7 @@ def init_world(world,vehicle):
     t.goto(vehicle.x * SCALE,vehicle.y * SCALE)
     
 
+    draw_legend(t)
     screen.update()
     initialized = True
 
@@ -105,7 +125,8 @@ def draw_step(history):
         t.goto(px * SCALE, py * SCALE)
         t.pendown()
         t.goto(x * SCALE, y * SCALE)
-
+    
+    
     screen.update()
 
 
