@@ -1,8 +1,10 @@
 #Stworzone przez Adam Kurbiel
-from utils import ask_int, ask_choice
+from utils import ask_int, ask_choice, separator
 from world import World
 from entities import Spaceship
 from turtle_view import init_world, draw_step
+from events import pick_event, announce_event
+import random
 
 def setup_game():
     print("┌─ WYPRAWA W KOSMOS ─┐")
@@ -54,18 +56,22 @@ def show_intro(world,vehicle, max_steps):
     print(f"└Cel misji: odnaleźć rdzeń energetyczny i przetrwać.")
 
 def choose_action():
-    print("\nDostępne akcje:")
-    print("1. Ruch naprzód")
-    print("2. Obrót w lewo")
-    print("3. Obrót w prawo")
-    print("4. Skanowanie terenu")
-    print("5. Tryb turbo")
-
-    return input("> Wybór: ")
+    print(separator(start=True))
+    print("│DOSTĘPNE AKCJE:")
+    print(separator())
+    print("├1. Ruch naprzód")
+    print("├2. Obrót w lewo")
+    print("├3. Obrót w prawo")
+    print("├4. Skanowanie terenu")
+    print("├5. Tryb turbo")
+    print(separator())
+    return input("└> Wybór: ")
+    
 
 def game_loop(world, vehicle, max_steps):
     history = []
     visited = []
+    event_log = []
 
     show_intro(world, vehicle,max_steps)
     init_world(world, vehicle)
@@ -92,14 +98,18 @@ def game_loop(world, vehicle, max_steps):
             status = "SUKCES"
             break
 
-
-        print(f"┌───\nKROK {vehicle.steps + 1}")
+        print(separator(start=True))
+        print(f"│KROK {vehicle.steps + 1}")
+        print(separator())
         print(f"├Pozycja: ({vehicle.x},{vehicle.y})")
         print(f"├Energia: {vehicle.energy}")
         print(f"├Integralność: {vehicle.integrity}")
-        print(f"└Rdzeń znaleziony: {'TAK' if vehicle.found_core else 'NIE'}")
+        print(f"├Rdzeń znaleziony: {'TAK' if vehicle.found_core else 'NIE'}")
+        print(separator(end=True))
 
         action = choose_action()
+        print("\n=================" * 2)
+        
 
         before_energy = vehicle.energy
         before_position = (vehicle.x, vehicle.y)
@@ -121,24 +131,39 @@ def game_loop(world, vehicle, max_steps):
                 log = vehicle.move(world,turbo=True)
             case _:
                 log = "Niepoprawna akcja. Wykonuję automatyczny ruch."
-                log += " " + vehicle.move(world)
+                log += "\n│" + vehicle.move(world)
             
         world_result = world.apply_world_effect(vehicle)
+        event_result = False
+
+        event_chance = random.randint(0,9)
+        
+        if event_chance == 5:
+            event_result = pick_event(vehicle)
 
         if world_result:
             visited.append(world_result)
 
-        print("\nRAPORT KROKU")
-        print(log)
+        if event_result:
+            event_log.append(event_result)
+            
+
+        print(separator(start=True))
+        print("│RAPORT KROKU")
+        print(separator())
+        print(f"├{log}")
 
         if world_result:
-            print(world_result)
+            print(f"├{world_result}")
+
+        if event_result:
+            announce_event(event_result)
         
-        print(f"Pozycja przed ruchem: {before_position}")
-        print(f"Pozycja po ruchu: ({vehicle.x},{vehicle.y})")
-        print(f"Energia przed ruchem: {before_energy}")
-        print(f"Energia po ruchu: {vehicle.energy}")
-        print("=========================\n")
+        print(f"├Pozycja przed ruchem: {before_position}")
+        print(f"├Pozycja po ruchu: ({vehicle.x},{vehicle.y})")
+        print(f"├Energia przed ruchem: {before_energy}")
+        print(f"├Energia po ruchu: {vehicle.energy}")
+        print(separator(end=True))
 
         history.append((vehicle.x, vehicle.y))
         draw_step(history)

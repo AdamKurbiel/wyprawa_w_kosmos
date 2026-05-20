@@ -37,7 +37,6 @@ class World:
 
         if position == self.core_position and not vehicle.found_core:
             vehicle.found_core = True
-            vehicle.energy += 30
             return "Odnaleziono rdzeń!"
         
         if position in self.energy_zones:

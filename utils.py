@@ -1,4 +1,13 @@
 #walidacja liczb
+SEPARATOR_LINE_LENGTH = 20
+
+def separator(start = False, end = False):
+    SEPARATOR_SIGN = "─"
+
+    line = SEPARATOR_SIGN * SEPARATOR_LINE_LENGTH
+    if end: return "└"+line
+    return "├"+line if not start else "┌"+line
+
 def ask_int(message, minimum, maximum, default):
     while True:
         value = input(message).strip()
