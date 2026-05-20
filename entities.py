@@ -21,7 +21,7 @@ class Spaceship:
         self.steps = 0
         self.found_core = False
     
-    def move(self, world, turbo=False):
+    def move(self, world, turbo=False): #ruch statku
         speed = 12 if turbo else 6
 
         cost = 12 if turbo else 5
@@ -46,10 +46,10 @@ class Spaceship:
         
         return "Statek przemieścił się do przodu."
     
-    def turn(self,amount):
+    def turn(self,amount): #obrót statku
         self.angle = (self.angle + amount) % 360
     
-    def calculate_score(self, status):
+    def calculate_score(self, status): #funkcja obliczająca wynik końcowy
         score = self.energy + self.integrity
 
         if self.found_core:

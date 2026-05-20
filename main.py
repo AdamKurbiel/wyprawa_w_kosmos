@@ -7,6 +7,7 @@ from events import pick_event, announce_event
 import random
 
 def setup_game():
+    #Podstawowa konfiguracja gry
     print("┌─ WYPRAWA W KOSMOS ─┐")
     print("│Autor:  Adam Kurbiel│")
     print("└────────────────────┘\n")
@@ -46,6 +47,7 @@ def setup_game():
     return world, spaceship, max_steps[difficulty]
 
 def show_intro(world,vehicle, max_steps):
+    #Pokaż początkowe informacje
     print(f"\n┌──Wyprawa: {vehicle.expedition_name}")
     print(f"├Pojazd: {vehicle.name}")
     print(f"├Pozycja startowa: ({vehicle.x},{vehicle.y})")
@@ -56,6 +58,7 @@ def show_intro(world,vehicle, max_steps):
     print(f"└Cel misji: odnaleźć rdzeń energetyczny i przetrwać.")
 
 def choose_action():
+    #wybór akcji
     print(separator(start=True))
     print("│DOSTĘPNE AKCJE:")
     print(separator())
@@ -139,7 +142,7 @@ def game_loop(world, vehicle, max_steps):
         event_chance = random.randint(0,9)
         
         if event_chance == 5:
-            event_result = pick_event(vehicle)
+            event_result = pick_event(vehicle, world)
 
         if world_result:
             visited.append(world_result)
@@ -178,6 +181,7 @@ def game_loop(world, vehicle, max_steps):
     }
 
 def show_summary(vehicle, result):
+    #finalne statystyki
     print(f"\n\n┌─{result['status'].upper()}")
     print(f"├Powód: {result['reason']}")
     print(f"├Nazwa wyprawy: {vehicle.expedition_name}")
@@ -205,6 +209,7 @@ def show_summary(vehicle, result):
     
 
 while True:
+    #pętla :)
     world, vehicle, max_steps = setup_game()
     result = game_loop(world, vehicle, max_steps)
 

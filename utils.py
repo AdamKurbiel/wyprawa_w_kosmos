@@ -1,14 +1,15 @@
-#walidacja liczb
-SEPARATOR_LINE_LENGTH = 20
-
-def separator(start = False, end = False):
+def separator(start = False, end = False): #Funkcja tworząca linię
+    SEPARATOR_LINE_LENGTH = 20
     SEPARATOR_SIGN = "─"
 
     line = SEPARATOR_SIGN * SEPARATOR_LINE_LENGTH
-    if end: return "└"+line
+
+    if end:
+        return "└"+line
+
     return "├"+line if not start else "┌"+line
 
-def ask_int(message, minimum, maximum, default):
+def ask_int(message, minimum, maximum, default): #walidacja liczby
     while True:
         value = input(message).strip()
 
@@ -26,8 +27,7 @@ def ask_int(message, minimum, maximum, default):
         except ValueError:
             print("Niepoprawna wartość.")
 
-#walidacja wyborów
-def ask_choice(message, choices):
+def ask_choice(message, choices): #walidacja wyborów
     print(f"{message}: {', '.join(choices)}")
 
     while True:

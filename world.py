@@ -14,6 +14,7 @@ class World:
 
     
     def generate_points(self, amount):
+        #funkcja losująca punkty na świecie
         points = []
 
         for _ in range(amount):
@@ -21,18 +22,15 @@ class World:
             y = random.randint(-self.size + 10, self.size - 10)
             points.append((x,y))
         
-        return points
+        return points 
     
-    def distance_to_base(self, x, y):
-        return int(math.dist((x,y), self.base_position))
-    
-    def distance_to_core(self, x, y):
+    def distance_to_core(self, x, y): #funkcja obliczająca dystans do rdzenia
         return int(math.dist((x,y), self.core_position))
     
-    def inside_world(self, x, y):
+    def inside_world(self, x, y): 
         return -self.size <= x <= self.size and -self.size <= y <= self.size
     
-    def apply_world_effect(self, vehicle):
+    def apply_world_effect(self, vehicle): #zwraca komunikat
         position = (vehicle.x, vehicle.y)
 
         if position == self.core_position and not vehicle.found_core:
@@ -54,7 +52,7 @@ class World:
         
         return None
     
-    def scan_area(self,x,y):
+    def scan_area(self,x,y): #Wypisujemy dystans od rdzenia
         distance = self.distance_to_core(x,y)
 
         if distance < 15:

@@ -1,5 +1,7 @@
 import turtle
 
+
+#skala linii (co ile bedzie skakalo miedzy punktami)
 SCALE = 4
 
 screen = None
@@ -71,7 +73,7 @@ def draw_legend(t):
     
 
 
-
+#za pierwszym załadowniem symulacji
 def init_world(world,vehicle):
     reset_view()
     global initialized
@@ -108,6 +110,7 @@ def init_world(world,vehicle):
     initialized = True
 
 
+#za każdym krokiem
 def draw_step(history):
     if not history:
         return
@@ -130,6 +133,7 @@ def draw_step(history):
     screen.update()
 
 
+#reset
 def reset_view():
     global initialized, screen, t
 
